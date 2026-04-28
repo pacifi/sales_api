@@ -5,3 +5,4 @@ router = routers.DefaultRouter()
 router.register('products', ProductModelViewSet)
 router.register('categories', CategoryModelViewSet)
 urlpatterns = router.urls
+
