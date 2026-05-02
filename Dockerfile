@@ -2,12 +2,19 @@ FROM python:3.12-slim
 
 WORKDIR /app
 
-# Solo copiamos el requirements para instalar dependencias en una capa limpia
+# Crear usuario no-root
+RUN addgroup --system appgroup && adduser --system --ingroup appgroup appuser
+
+# Instalar dependencias como root (necesario para pip)
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copiamos solo el código fuente (el .dockerignore evitará que entre basura)
+# Copiar código y asignar permisos al usuario
 COPY . .
+RUN chown -R appuser:appgroup /app
+
+# Cambiar al usuario no-root
+USER appuser
 
 EXPOSE 8000
 
