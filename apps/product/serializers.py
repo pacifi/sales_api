@@ -2,12 +2,21 @@ from apps.product.models import Product, Category
 from rest_framework import serializers
 
 
-class ProductSerializer(serializers.ModelSerializer):
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = '__all__'
+
+
+class ProductReadSerializer(serializers.ModelSerializer):
+    category = CategorySerializer(read_only=True)
+
     class Meta:
         model = Product
         fields = '__all__'
 
-class CategorySerializer(serializers.ModelSerializer):
+
+class ProductWriteSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Category
+        model = Product
         fields = '__all__'

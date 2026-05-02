@@ -1,11 +1,15 @@
 from apps.product.models import Product, Category
-from apps.product.serializers import ProductSerializer, CategorySerializer
+from apps.product.serializers import ProductReadSerializer, ProductWriteSerializer, CategorySerializer
 from rest_framework import viewsets
 
 
 class ProductModelViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
-    serializer_class = ProductSerializer
+
+    def get_serializer_class(self):
+        if self.action in ['list', 'retrieve']:
+            return ProductReadSerializer
+        return ProductWriteSerializer
 
 
 class CategoryModelViewSet(viewsets.ModelViewSet):
